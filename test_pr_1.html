@@ -1,0 +1,90 @@
+﻿<html>
+	<head>
+		<style>
+			body {
+			text-align: center;
+			}
+
+			#hedr {
+			font-size: 40px;
+			}
+
+			#zadacha {
+			font-size: 30px;
+			}
+			
+			.inps {
+			font-size:20px;
+			}
+		</style>
+		<script>
+			"use strict";
+			window.onload = function()
+			{
+				let answer = ""
+				let storg = localStorage.getItem("myData")
+				if(storg) 
+				{
+					answer += "В хранилище обнаружена запись данной работы!<br>"
+					storg = storg.substr(0, 2)
+					if(isNaN(storg)) answer += "В записи из хранилища хотя бы один символ или оба не являются цифрами!<br>"
+					else
+					{
+						if(+storg % 2 == 0) answer += "Оба символа из записи хранилища являются цифрами и образуют четное число<br>"
+						else answer += "Оба символа из записи хранилища являются цифрами, но не образуют четное число<br>" 
+					}
+				}
+
+				let cok = document.cookie
+				let cookie = ""
+				let arr = cok.replace(/ /g,'').split(';')
+				for(let i = 0; i < arr.length; i++)
+				{
+					let entries = arr[i].split('=')
+					if(entries[0] == "myData")
+					{
+						answer += "В куки обнаружена запись данной работы!<br>"
+						cookie = entries[1].substr(0, 2)
+						if(isNaN(cookie)) answer += "В записи куки хотя бы один символ или оба не являются цифрами!<br>"
+						else
+						{
+							if(+cookie % 2 == 0) answer += "Оба символа из записи куки являются цифрами и образуют четное число<br>"
+							else answer += "Оба символа из записи куки являются цифрами, но не образуют четное число<br>"
+						}
+										
+					}
+				}
+				
+				document.getElementById("answer").innerHTML = answer
+				
+				document.getElementById("butCookie").addEventListener("click",
+				function(event)
+				{
+					let input = document.getElementById("inp").value
+					document.cookie = "myData=" + input + "; max-age=3600"
+					alert(document.cookie)
+				}
+				)	
+
+				document.getElementById("butStorage").addEventListener("click",
+				function(event)
+				{
+					let input = document.getElementById("inp").value
+					localStorage.setItem("myData", input)
+				}
+				)	
+			}		
+		</script>
+	</head>
+	<body>
+		<p id="hedr">Практическая работа №6<br>
+			     Переверзев Михаил<br>
+			     20-ПРО-2
+		</p>
+		<p id="zadacha">Задача: прочитать первые два символа из куки и локального хранилища и определить, являются ли они цифрами. Если являются, то определить, является ли число, которое они образуют, четным</p>
+		<input type="text" class="inps" id="inp"/><br>
+		<input type="button" class="inps" id="butCookie" value="Записать в куки"/><br>
+		<input type="button" class="inps" id="butStorage" value="Записать в локальное хранилище"/>
+		<p class="inps" id="answer"></p>
+	</body>
+</html>
